@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package imagecms;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service ImageService {
+  // List images with optional filters
+  rpc ListImages(ListImagesRequest) returns (ListImagesResponse);
+  
+  // Get image by ID
+  rpc GetImage(GetImageRequest) returns (ImageResponse);
+  
+  // Create a new image
+  rpc CreateImage(CreateImageRequest) returns (ImageResponse);
+  
+  // Update an existing image
+  rpc UpdateImage(UpdateImageRequest) returns (ImageResponse);
+  
+  // Delete an image
+  rpc DeleteImage(DeleteImageRequest) returns (DeleteImageResponse);
+  
+  // Export images with optional filters
+  rpc ExportImages(ExportImagesRequest) returns (ExportImagesResponse);
+}
+
+message Tag {
+  string tag = 1;
+}
+
+message ImageSummary {
+  int32 id = 1;
+  string title = 2;
+  string author = 3;
+  repeated string tags = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message ImageDetail {
+  int32 id = 1;
+  string image_url = 2;
+  string title = 3;
+  string author = 4;
+  repeated string tags = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message ListImagesRequest {
+  int32 skip = 1;
+  int32 limit = 2;
+  optional string author = 3;
+  optional string tag = 4;
+}
+
+message ListImagesResponse {
+  repeated ImageSummary images = 1;
+}
+
+message GetImageRequest {
+  int32 image_id = 1;
+}
+
+message CreateImageRequest {
+  string image_url = 1;
+  string title = 2;
+  string author = 3;
+  repeated string tags = 4;
+}
+
+message UpdateImageRequest {
+  int32 image_id = 1;
+  optional string image_url = 2;
+  optional string title = 3;
+  optional string author = 4;
+  repeated string tags = 5;
+}
+
+message ImageResponse {
+  ImageDetail image = 1;
+}
+
+message DeleteImageRequest {
+  int32 image_id = 1;
+}
+
+message DeleteImageResponse {
+  bool success = 1;
+}
+
+message ExportImagesRequest {
+  optional string author = 1;
+  optional string tag = 2;
+}
+
+message ExportImagesResponse {
+  repeated ImageDetail images = 1;
+}
