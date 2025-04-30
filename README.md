@@ -69,14 +69,150 @@ python client/rest_client.py
 
 Or use tools like Postman or cURL to interact with the endpoints:
 
+Create an image: POST http://localhost:8000/api/v1/images/
+List Images with Filters: GET http://localhost:8000/api/v1/images?author={author}&tag={tag}
+List images: GET http://localhost:8000/api/v1/images/
+Get an image: GET http://localhost:8000/api/v1/images/{image_id}
+Update an image: PUT http://localhost:8000/api/v1/images/{image_id}
+Delete an image: DELETE http://localhost:8000/api/v1/images/{image_id}
+Export images: GET http://localhost:8000/api/v1/export/
+
+Examples executions of API:
 
 - Create an image: `POST http://localhost:8000/api/v1/images/`
-- List Images with Filters: `GET http://localhost:8000/api/v1/images?author={author}&tag={tag}`
+  Example post JSON body:
+  {
+  "title": "Beautiful Mountain",
+  "author": "John Doe",
+  "image_url": "https://example.com/mountain.jpg",
+  "tags": ["nature", "mountain", "landscape"]
+  }
+  
+- List Images with Filters: `GET http://localhost:8000/api/v1/images?author={author}&tag={tag}` 
+
+  Request: http://localhost:8000/api/v1/images?tag=serene
+  Response: 200 OK 
+  [
+    {
+        "id": 3,
+        "title": "Beautiful Mountain",
+        "author": "John Doe",
+        "tags": [
+            "serene",
+            "mountain",
+            "landscape"
+        ],
+        "created_at": "2025-04-26T23:56:05.251850"
+    }
+]
+
 - List images: `GET http://localhost:8000/api/v1/images/`
+Response : 200 Ok
+[
+    {
+        "id": 1,
+        "title": "Beautiful Mountain",
+        "author": "John Doe",
+        "tags": [
+            "nature",
+            "mountain",
+            "landscape"
+        ],
+        "created_at": "2025-04-25T22:16:40.198863"
+    },
+    {
+        "id": 2,
+        "title": "Beautiful Mountain",
+        "author": "John Doe",
+        "tags": [
+            "nature",
+            "mountain",
+            "landscape"
+        ],
+        "created_at": "2025-04-26T23:49:20.489390"
+    },
+    {
+        "id": 3,
+        "title": "Beautiful Mountain",
+        "author": "John Doe",
+        "tags": [
+            "serene",
+            "mountain",
+            "landscape"
+        ],
+        "created_at": "2025-04-26T23:56:05.251850"
+    }
+]
 - Get an image: `GET http://localhost:8000/api/v1/images/{image_id}`
+  Request: http://localhost:8000/api/v1/images/1
+
 - Update an image: `PUT http://localhost:8000/api/v1/images/{image_id}`
+  Request: http://localhost:8000/api/v1/images/2
+  Request Body:  
+  {
+  "title": "mystery Mountain",
+  "author": "chetan Bhagat",
+  "image_url": "https://example.com/mountain.jpg",
+  "tags": ["crime", "thriller", "intense"]
+  }
+  Response: 200 OK 
+  {
+    "title": "mystery Mountain",
+    "author": "chetan Bhagat",
+    "image_url": "https://example.com/mountain.jpg",
+    "id": 2,
+    "created_at": "2025-04-26T23:49:20.489390",
+    "tags": [
+        {
+            "tag": "crime",
+            "id": 10,
+            "image_id": 2
+        },
+        {
+            "tag": "thriller",
+            "id": 11,
+            "image_id": 2
+        },
+        {
+            "tag": "intense",
+            "id": 12,
+            "image_id": 2
+        }
+    ]
+}
 - Delete an image: `DELETE http://localhost:8000/api/v1/images/{image_id}`
+ Request: http://localhost:8000/api/v1/images/2
+ Response: 204 No content 
+
 - Export images: `GET http://localhost:8000/api/v1/export/`
+Response:
+
+[
+    {
+        "title": "Beautiful Mountain",
+        "author": "John Doe",
+        "image_url": "https://example.com/mountain.jpg",
+        "id": 3,
+        "created_at": "2025-04-26T23:56:05.251850",
+        "tags": [
+            {
+                "tag": "serene",
+                "id": 7,
+                "image_id": 3
+            },
+            {
+                "tag": "mountain",
+                "id": 8,
+                "image_id": 3
+            },
+            {
+                "tag": "landscape",
+                "id": 9,
+                "image_id": 3
+            }
+        ]
+    }
+]
 
 ### gRPC API
 
